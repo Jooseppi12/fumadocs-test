@@ -6,7 +6,8 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   output: 'export',
-  assetPrefix: './'
+  assetPrefix: '',
+  basePath: ''
 };
 
 export default withMDX(config);

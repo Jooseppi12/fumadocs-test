@@ -15,6 +15,10 @@ jobs:
       - name: Install packages
         run: npm install
 
+      - name: Configure basePath
+        run:
+          "sed -i 's/basePath: \x27\x27/basePath: \x27${{ github.event.repository.name }}\x27/g' next.config.mjs"
+
       - name: Build
         run: npm run build
 
