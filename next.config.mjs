@@ -5,7 +5,8 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  output: 'export'
+  output: 'export',
+  assetPrefix: './'
 };
 
 export default withMDX(config);
