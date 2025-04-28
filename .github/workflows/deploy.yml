@@ -18,7 +18,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          GHREPO: '{{ github.event.repository.name }}'
+          GHREPO: ${{ github.event.repository.name }}
 
       - name: Upload static files as artifact
         id: deployment
