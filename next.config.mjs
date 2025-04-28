@@ -1,6 +1,6 @@
 import { createMDX } from 'fumadocs-mdx/next';
 
-const basePathToUse = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO + "/" : "";
+const basePathToUse = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
 const withMDX = createMDX();
 
