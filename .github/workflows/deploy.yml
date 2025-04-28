@@ -17,7 +17,7 @@ jobs:
 
       - name: Configure basePath
         run:
-          "sed -i \"s/basePath: ''/basePath: '${{ github.event.repository.name }}'/g\" next.config.mjs"
+          "sed -i \"s/basePath: ''/basePath: '$\/{{ github.event.repository.name }}\/'/g\" next.config.mjs"
 
       - name: Print config
         run: "cat next.config.mjs"
