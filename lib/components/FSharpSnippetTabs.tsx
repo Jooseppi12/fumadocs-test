@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'; // a clean light theme
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'; // a clean light theme
 import { useTheme } from "next-themes";
 
 export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharpSnippetTabsProps) {
@@ -43,12 +43,14 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
             });
     }, [snippet]);
 
+    if (!resolvedTheme) return null;
+
     return (
         <Tabs items={["fsharp", "index.html", "Live"]}>
             <Tab value="fsharp">
                 <SyntaxHighlighter 
                     language="fsharp" 
-                    style={resolvedTheme === "dark" ? vscDarkPlus : prism}
+                    style={resolvedTheme === "dark" ? vscDarkPlus : oneLight }
                     customStyle={codeBlockStyle}
                 >
                     {fsCode ?? "Loading..."}
@@ -57,7 +59,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
             <Tab value="index.html">
                 <SyntaxHighlighter 
                     language="html" 
-                    style={resolvedTheme === "dark" ? vscDarkPlus : prism}
+                    style={resolvedTheme === "dark" ? vscDarkPlus : oneLight }
                     customStyle={codeBlockStyle}
                 >
                     {htmlCode ?? "Loading..."}
