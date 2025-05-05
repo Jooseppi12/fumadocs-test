@@ -46,8 +46,8 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
     if (!resolvedTheme) return null;
 
     return (
-        <Tabs items={["fsharp", "index.html", "Live"]}>
-            <Tab value="fsharp">
+        <Tabs items={["F#", "index.html", "Result"]}>
+            <Tab value="F#">
                 <SyntaxHighlighter 
                     language="fsharp" 
                     style={resolvedTheme === "dark" ? vscDarkPlus : oneLight }
@@ -65,7 +65,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
                     {htmlCode ?? "Loading..."}
                 </SyntaxHighlighter> 
             </Tab>
-            <Tab value="Live">
+            <Tab value="Result">
                 <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
                     <a
                     href={`/snippets/${snippet}/wwwroot/index.html`}
