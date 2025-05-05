@@ -13,7 +13,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
     const { resolvedTheme } = useTheme();
 
     useEffect(() => {
-        fetch(`/snippets/${snippet}/Client.fs`)
+        fetch(`/snippets/${snippet}/code/Client.fs`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -30,7 +30,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
     }, [snippet]);
 
     useEffect(() => {
-        fetch(`/snippets/${snippet}/wwwroot/index.html`)
+        fetch(`/snippets/${snippet}/code/index.html`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");

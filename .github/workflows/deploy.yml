@@ -20,6 +20,19 @@ jobs:
         env:
           GHREPO: ${{ github.event.repository.name }}
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build snippets
+        run: dotnet build public/snippets/forms_example_1
+
+      - name: Move snippet and it's artifacts to the out directory
+        run: |
+          cp public/snippets/forms_example_1/Client.fs out/snippets/forms_example_1/code/Client.fs
+          cp public/snippets/forms_example_1/wwwroot/index.html out/snippets/forms_example_1/code/index.html
+          cp -r public/snippets/forms_example_1/wwwroot/* out/snippets/forms_example_1/
+
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
