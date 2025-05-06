@@ -30,6 +30,7 @@ jobs:
       - name: Move snippet and it's artifacts to the out directory
         run: |
           cp -r public/snippets/forms_example_1/wwwroot/* out/snippets/forms_example_1/
+          mkdir out/snippets/forms_example_1/code
           cp public/snippets/forms_example_1/Client.fs out/snippets/forms_example_1/code/Client.fs
           cp public/snippets/forms_example_1/wwwroot/index.html out/snippets/forms_example_1/code/index.html
 
