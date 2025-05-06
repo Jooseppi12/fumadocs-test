@@ -7,13 +7,15 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'; // a clean light theme
 import { useTheme } from "next-themes";
 
+const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
+
 export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharpSnippetTabsProps) {
     const [fsCode, setFsCode] = useState<string | null>(null);
     const [htmlCode, setHtmlCode] = useState<string | null>(null);
     const { resolvedTheme } = useTheme();
 
     useEffect(() => {
-        fetch(`/snippets/${snippet}/code/Client.fs`)
+        fetch(basePath + `/snippets/${snippet}/code/Client.fs`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -30,7 +32,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
     }, [snippet]);
 
     useEffect(() => {
-        fetch(`/snippets/${snippet}/code/index.html`)
+        fetch(basePath + `/snippets/${snippet}/code/index.html`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
