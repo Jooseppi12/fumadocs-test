@@ -25,7 +25,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build snippets
-        run: dotnet build public/snippets/forms_example_1
+        run: dotnet build snippets/forms_example_1
 
       - name: Move snippet and it's artifacts to the out directory
         run: |
