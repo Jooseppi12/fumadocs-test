@@ -45,13 +45,6 @@ export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highli
   );
 }
 
-const codeBlockStyle: React.CSSProperties = {
-  overflowY: "auto",
-  maxHeight: "600px",
-  padding: "1rem",
-  borderRadius: "6px",
-};
-
 function extractBetweenMarkers(fileContent: string): string {
   const startMarker = "// <FUMADOCS BEGIN>";
   const endMarker = "// <FUMADOCS END>";
