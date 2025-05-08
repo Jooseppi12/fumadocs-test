@@ -9,13 +9,13 @@ export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highli
 
   return (
     <Tabs items={["F#", "Result"]}>
-      <Tab value="F#">
+      <Tab value="F#" className="not-prose">
         <CustomSyntaxHighlighter code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighter>
       </Tab>
       <Tab value="Result">
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
           <a
-            href={`${basePath}/snippets/${snippet}/wwwroot/index.html`}
+            href={`${basePath}/snippets/${snippet}/index.html`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -32,7 +32,7 @@ export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highli
           </a>
         </div>
         <iframe
-          src={`/snippets/${snippet}/wwwroot/index.html`}
+          src={`${basePath}/snippets/${snippet}/index.html`}
           style={{
             width: "100%",
             height: `${liveSnippetHeight}px`,

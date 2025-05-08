@@ -43,7 +43,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600", highligh
                 </div>
 
                 <iframe
-                    src={`/snippets/${snippet}/index.html`}
+                    src={`${basePath}/snippets/${snippet}/index.html`}
                     style={{
                       width: "100%",
                       height: `${liveSnippetHeight}px`,
