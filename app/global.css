@@ -6,3 +6,22 @@ code[class*="language-"] {
     white-space: pre-wrap !important;
     word-break: break-word !important;
 }
+
+.shiki {
+    counter-reset: step;
+    counter-increment: step 0;
+    .line {
+      &::before {
+        counter-increment: step;
+        @apply mr-6 inline-block w-4 border-transparent text-right text-neutral-600 content-[counter(step)];
+      }
+    }
+  }
+
+.dark .line.highlight:has(> span) {
+    background-color: #393f45;
+}
+
+.light .line.highlight:has(> span) {
+    background-color: #d8d8d8;
+}

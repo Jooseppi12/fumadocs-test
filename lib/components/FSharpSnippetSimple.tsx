@@ -1,40 +1,21 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useTheme } from "next-themes";
+import {CustomSyntaxHighlighter} from 'lib/components/CustomSyntaxHighlighter';
+import fs from "node:fs";
 
-export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600" }: Props) {
-  const [fsCode, setFsCode] = useState<string | null>(null);
-  const { resolvedTheme } = useTheme();
+const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
-  useEffect(() => {
-    fetch(`/snippets/${snippet}/code/Client.fs`)
-      .then((res) => res.text())
-      .then((code) => setFsCode(extractBetweenMarkers(code)))
-      .catch((err) => console.error("Error loading F# code:", err));
-  }, [snippet]);
-
-  if (!resolvedTheme) return null;
+export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highlightLines = "" }: Props) {
+  const fsCode = extractBetweenMarkers(fs.readFileSync(`snippets/${snippet}/Client.fs`, 'utf-8'));  
 
   return (
     <Tabs items={["F#", "Result"]}>
       <Tab value="F#">
-        <SyntaxHighlighter
-          language="fsharp"
-          style={resolvedTheme === "dark" ? vscDarkPlus : oneLight}
-          customStyle={codeBlockStyle}
-        >
-          {fsCode ?? "Loading..."}
-        </SyntaxHighlighter>
+        <CustomSyntaxHighlighter code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighter>
       </Tab>
       <Tab value="Result">
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
           <a
-            href={`/snippets/${snippet}/wwwroot/index.html`}
+            href={`${basePath}/snippets/${snippet}/wwwroot/index.html`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -84,4 +65,5 @@ function extractBetweenMarkers(fileContent: string): string {
 interface Props {
   snippet: string;
   liveSnippetHeight?: string;
+  highlightLines?: string;
 }

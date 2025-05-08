@@ -1,76 +1,31 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'; // a clean light theme
-import { useTheme } from "next-themes";
+import {CustomSyntaxHighlighter} from 'lib/components/CustomSyntaxHighlighter';
+import fs from "node:fs";
 
 const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
-export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharpSnippetTabsProps) {
-    const [fsCode, setFsCode] = useState<string | null>(null);
-    const [htmlCode, setHtmlCode] = useState<string | null>(null);
-    const { resolvedTheme } = useTheme();
+export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600", highlightLines = "" }: FSharpSnippetTabsProps) {
+    // const { resolvedTheme } = useTheme();
 
-    useEffect(() => {
-        fetch(basePath + `/snippets/${snippet}/code/Client.fs`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.text();
-            })
-            .then((code) => {
-                const extractedCode = extractBetweenMarkers(code);
-                setFsCode(extractedCode);
-            })
-            .catch((error) => {
-                console.error("Error fetching F# code:", error);
-            });
-    }, [snippet]);
+    const fsCode = extractBetweenMarkers(fs.readFileSync(`snippets/${snippet}/Client.fs`, 'utf-8'));
+    const htmlCode = extractBetweenMarkers(fs.readFileSync(`snippets/${snippet}/wwwroot/index.html`, 'utf-8'));
 
-    useEffect(() => {
-        fetch(basePath + `/snippets/${snippet}/code/index.html`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.text();
-            })
-            .then(setHtmlCode)
-            .catch((error) => {
-                console.error("Error fetching HTML code:", error);
-            });
-    }, [snippet]);
-
-    if (!resolvedTheme) return null;
+    
+    // if (!resolvedTheme) return null;
 
     return (
         <Tabs items={["F#", "index.html", "Result"]}>
-            <Tab value="F#">
-                <SyntaxHighlighter 
-                    language="fsharp" 
-                    style={resolvedTheme === "dark" ? vscDarkPlus : oneLight }
-                    customStyle={codeBlockStyle}
-                >
-                    {fsCode ?? "Loading..."}
-                </SyntaxHighlighter>
+            <Tab value="F#" className="not-prose">
+                <CustomSyntaxHighlighter code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighter>
             </Tab>
-            <Tab value="index.html">
-                <SyntaxHighlighter 
-                    language="html" 
-                    style={resolvedTheme === "dark" ? vscDarkPlus : oneLight }
-                    customStyle={codeBlockStyle}
-                >
-                    {htmlCode ?? "Loading..."}
-                </SyntaxHighlighter> 
+            <Tab value="index.html" className="not-prose">
+                <CustomSyntaxHighlighter code={htmlCode} language="html" highlightLines=""></CustomSyntaxHighlighter>
             </Tab>
             <Tab value="Result">
                 <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
                     <a
-                    href={`/snippets/${snippet}/wwwroot/index.html`}
+                    href={`${basePath}/snippets/${snippet}/index.html`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -88,7 +43,7 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
                 </div>
 
                 <iframe
-                    src={`/snippets/${snippet}/wwwroot/index.html`}
+                    src={`/snippets/${snippet}/index.html`}
                     style={{
                       width: "100%",
                       height: `${liveSnippetHeight}px`,
@@ -101,13 +56,6 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600" }: FSharp
         </Tabs>
     );
 }
-
-const codeBlockStyle: React.CSSProperties = {
-    overflowY: "auto",
-    maxHeight: "600px",
-    padding: "1rem",
-    borderRadius: "6px",
-};
 
 function extractBetweenMarkers(fileContent: string): string {
     const startMarker = "// <FUMADOCS BEGIN>";
@@ -126,4 +74,5 @@ function extractBetweenMarkers(fileContent: string): string {
 interface FSharpSnippetTabsProps {
     snippet: string; // e.g. "forms_example_1"
     liveSnippetHeight?: string;
+    highlightLines?: string;
 }
