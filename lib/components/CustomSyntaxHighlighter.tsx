@@ -5,7 +5,7 @@ import type { Element } from "hast"
 import { createRanges } from "./shared";
 import { CopyCodeComponent } from "./copyCodeComponent";
 
-export function CustomSyntaxHighlighter({ id, code, language, highlightLines }: Props) {
+export function CustomSyntaxHighlighter({ code, language, highlightLines }: Props) {
     const ranges = createRanges(highlightLines);
     const highlightTransformer : ShikiTransformer =
       {

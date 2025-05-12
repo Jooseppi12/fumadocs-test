@@ -2,7 +2,6 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import {CustomSyntaxHighlighterWithCopy} from 'lib/components/CustomSyntaxHighlighter';
 import fs from "node:fs";
 import { extractBetweenMarkers } from "./shared";
-import { CopyCodeComponent } from "./copyCodeComponent";
 
 const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
