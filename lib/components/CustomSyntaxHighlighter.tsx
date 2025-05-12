@@ -1,17 +1,46 @@
-import {highlight} from "lib/components/customHighlighter"
-// import { CodeBlock } from "fumadocs-ui/components/codeblock";
+import React, { JSX } from "react";
+import {highlight} from "fumadocs-core/highlight"
+import type { ShikiTransformer } from "shiki"
+import type { Element } from "hast"
+import { createRanges } from "./shared";
+import { CopyCodeComponent } from "./copyCodeComponent";
 
+export function CustomSyntaxHighlighter({ id, code, language, highlightLines }: Props) {
+    const ranges = createRanges(highlightLines);
+    const highlightTransformer : ShikiTransformer =
+      {
+        line(node: Element, line: number) {
+          if (ranges.includes(line)) {
+            this.addClassToHast(node, 'highlight')
+          }
+        }
+      }
 
-export function CustomSyntaxHighlighter({ code, language, highlightLines }: Props) {
-    // const { resolvedTheme } = useTheme();
-  
-    // if (!resolvedTheme) return null;
-    console.log(language);
-    return (highlight(code, {lang: language}, highlightLines));
+    const options =
+      {
+        lang: language,
+        transformers: [
+          highlightTransformer
+        ]
+      }
+    return (highlight(code, options));
 }
 
+export function CustomSyntaxHighlighterWithCopy(p: Props) : JSX.Element {
+  const c = 
+    <div className="copyBlockHolder" id={p.id}>
+      <button className="copy" data-code={p.code}>
+        <span className="ready"></span>
+        <span className="success"></span>
+      </button>
+      <CustomSyntaxHighlighter id={p.id} code={p.code} language={p.language} highlightLines={p.highlightLines}></CustomSyntaxHighlighter>
+      <CopyCodeComponent id={p.id}></CopyCodeComponent>
+    </div>;
+  return c;
+}
 
 interface Props {
+  id: string;
   code: string;
   language: string;
   highlightLines: string;

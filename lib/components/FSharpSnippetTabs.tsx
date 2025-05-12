@@ -1,26 +1,22 @@
-import React from "react";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import {CustomSyntaxHighlighter} from 'lib/components/CustomSyntaxHighlighter';
+import {CustomSyntaxHighlighterWithCopy} from 'lib/components/CustomSyntaxHighlighter';
 import fs from "node:fs";
+import { extractBetweenMarkers } from "./shared";
+import { CopyCodeComponent } from "./copyCodeComponent";
 
 const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
 export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600", highlightLines = "" }: FSharpSnippetTabsProps) {
-    // const { resolvedTheme } = useTheme();
-
     const fsCode = extractBetweenMarkers(fs.readFileSync(`snippets/${snippet}/Client.fs`, 'utf-8'));
     const htmlCode = extractBetweenMarkers(fs.readFileSync(`snippets/${snippet}/wwwroot/index.html`, 'utf-8'));
-
-    
-    // if (!resolvedTheme) return null;
 
     return (
         <Tabs items={["F#", "index.html", "Result"]}>
             <Tab value="F#" className="not-prose">
-                <CustomSyntaxHighlighter code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighter>
+                <CustomSyntaxHighlighterWithCopy id={`snippet_${snippet}_fs`} code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighterWithCopy>    
             </Tab>
             <Tab value="index.html" className="not-prose">
-                <CustomSyntaxHighlighter code={htmlCode} language="html" highlightLines=""></CustomSyntaxHighlighter>
+                <CustomSyntaxHighlighterWithCopy id={`snippet_${snippet}_fs`} code={htmlCode} language="html" highlightLines=""></CustomSyntaxHighlighterWithCopy>
             </Tab>
             <Tab value="Result">
                 <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
@@ -55,20 +51,6 @@ export function FSharpSnippetTabs({ snippet, liveSnippetHeight = "600", highligh
             </Tab>      
         </Tabs>
     );
-}
-
-function extractBetweenMarkers(fileContent: string): string {
-    const startMarker = "// <FUMADOCS BEGIN>";
-    const endMarker = "// <FUMADOCS END>";
-
-    const startIndex = fileContent.indexOf(startMarker);
-    const endIndex = fileContent.indexOf(endMarker, startIndex + startMarker.length);
-
-    if (startIndex === -1 || endIndex === -1) {
-        return fileContent; // Return the original content if markers are not found
-    }
-
-    return fileContent.substring(startIndex + startMarker.length, endIndex).trim();
 }
 
 interface FSharpSnippetTabsProps {

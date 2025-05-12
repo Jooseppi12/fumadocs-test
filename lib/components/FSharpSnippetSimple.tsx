@@ -1,6 +1,8 @@
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import {CustomSyntaxHighlighter} from 'lib/components/CustomSyntaxHighlighter';
+import {CustomSyntaxHighlighterWithCopy} from 'lib/components/CustomSyntaxHighlighter';
 import fs from "node:fs";
+import { extractBetweenMarkers } from "./shared";
+import { CopyCodeComponent } from "./copyCodeComponent";
 
 const basePath = process.env.GHREPO !== undefined ? "/" + process.env.GHREPO : "";
 
@@ -10,7 +12,7 @@ export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highli
   return (
     <Tabs items={["F#", "Result"]}>
       <Tab value="F#" className="not-prose">
-        <CustomSyntaxHighlighter code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighter>
+        <CustomSyntaxHighlighterWithCopy id={`snippet_${snippet}_fs`} code={fsCode} language="fsharp" highlightLines={highlightLines}></CustomSyntaxHighlighterWithCopy>
       </Tab>
       <Tab value="Result">
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
@@ -43,16 +45,6 @@ export function FSharpSnippetSimple({ snippet, liveSnippetHeight = "600", highli
       </Tab>
     </Tabs>
   );
-}
-
-function extractBetweenMarkers(fileContent: string): string {
-  const startMarker = "// <FUMADOCS BEGIN>";
-  const endMarker = "// <FUMADOCS END>";
-  const startIndex = fileContent.indexOf(startMarker);
-  const endIndex = fileContent.indexOf(endMarker, startIndex + startMarker.length);
-  return startIndex === -1 || endIndex === -1
-    ? fileContent
-    : fileContent.substring(startIndex + startMarker.length, endIndex).trim();
 }
 
 interface Props {
