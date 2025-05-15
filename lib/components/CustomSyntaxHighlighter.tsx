@@ -29,7 +29,7 @@ export function CustomSyntaxHighlighter({ code, language, highlightLines }: Prop
 export function CustomSyntaxHighlighterWithCopy(p: Props) : JSX.Element {
   const c = 
     <div className="copyBlockHolder" id={p.id}>
-      <button className="copy" data-code={p.code}>
+      <button className="copy">
         <span className="ready"></span>
         <span className="success"></span>
       </button>

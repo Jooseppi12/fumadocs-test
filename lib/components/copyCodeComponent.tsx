@@ -12,7 +12,7 @@ export function CopyCodeComponent({id} : Props) {
             for (let i = 0; i < copyButtons.length; i++) {
                 const el = copyButtons[i];
                 el.addEventListener("click", function () {
-                  const code = el.getAttribute("data-code") ?? "";
+                  const code = parent?.querySelector("code")?.textContent ?? "Could not locate element to find the code to copy."
                   navigator.clipboard.writeText(code);
                   el.classList.add('copied');
                   setTimeout(() => el.classList.remove('copied'), 2000)
